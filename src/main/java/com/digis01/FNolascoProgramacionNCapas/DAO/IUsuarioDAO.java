@@ -8,11 +8,11 @@ import com.digis01.FNolascoProgramacionNCapas.JPA.UsuarioDireccion;
 public interface IUsuarioDAO {
 //    Result UsuarioGetById(int IdUsuario);
     Result GetAllJPA();
-//    Result AddJPA(UsuarioDireccion usuarioDireccion);
+    Result AddJPA(UsuarioDireccion usuarioDireccion);
 //    Result AddDireccionJPA(UsuarioDireccion usuarioDireccion);
     Result UsuaDirByIdJPA(int IdUsuario);
 //    Result UsuarioUpdateJPA(Usuario usuario);
 //    Result DieccionUpdateJPA(UsuarioDireccion usuarioDireccion);
 //    Result DireccionDeleteJPA(int IdDireccion);
-//    Result DeleteUsuarioDireccionJPA(int IdUsuario);
+    Result DeleteUsuarioDireccionJPA(int IdUsuario);
 }

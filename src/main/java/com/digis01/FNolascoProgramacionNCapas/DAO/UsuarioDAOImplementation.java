@@ -83,7 +83,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             for (com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario : usuarios) {
 
                 UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
-                usuarioDireccion.usuario = usuario;
+                usuarioDireccion.Usuario = usuario;
 
                 TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
                 queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
@@ -105,61 +105,29 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
     }
 
-//    @Transactional
-//    @Override
-//    public Result AddJPA(UsuarioDireccion usuarioDireccion) {
-//        Result result = new Result();
+    @Transactional
+    @Override
+    public Result AddJPA(UsuarioDireccion usuarioDireccion) {
+        Result result = new Result();
+
+        try {
+            entityManager.persist(usuarioDireccion.Usuario);
+
+            usuarioDireccion.Direccion.Usuario = usuarioDireccion.Usuario;
+            entityManager.persist(usuarioDireccion.Direccion);
+
+            result.correct = true;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
 //
-//        try {
-//            //llenado de usuarioJPA con el usuario ML
-//            com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuarioJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
-//            usuarioJPA.setUserName(usuarioDireccion.Usuario.getUserName());
-//            usuarioJPA.setNombre(usuarioDireccion.Usuario.getNombre());
-//            usuarioJPA.setApellidoPaterno(usuarioDireccion.Usuario.getApellidoPaterno());
-//            usuarioJPA.setEmail(usuarioDireccion.Usuario.getEmail());
-//            usuarioJPA.setSexo(usuarioDireccion.Usuario.getSexo());
-//            usuarioJPA.setTelefono(usuarioDireccion.Usuario.getTelefono());
-//            usuarioJPA.setCelular(usuarioDireccion.Usuario.getCelular());
-//            usuarioJPA.setCurp(usuarioDireccion.Usuario.getCurp());
-//            usuarioJPA.setApellidoMaterno(usuarioDireccion.Usuario.getApellidoMaterno());
-//            usuarioJPA.setPassword(usuarioDireccion.Usuario.getPassword());
-//            usuarioJPA.setFechaNacimiento(usuarioDireccion.Usuario.getFechaNacimiento());
-//            usuarioJPA.setImagen(usuarioDireccion.Usuario.getImagen());
-//
-//            usuarioJPA.Roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
-//            usuarioJPA.Roll.setIdRoll(usuarioDireccion.Usuario.Roll.getIdRoll());
-//
-//            entityManager.persist(usuarioJPA);
-//
-//            /*inserción de dirección*/
-//            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA
-//                    = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
-//            direccionJPA.setCalle(usuarioDireccion.Direccion.getCalle());
-//            direccionJPA.setNumeroExterior(usuarioDireccion.Direccion.getNumeroExterior());
-//            direccionJPA.setNumeroInterior(usuarioDireccion.Direccion.getNumeroInterior());
-//
-//            direccionJPA.Colonia = new com.digis01.FNolascoProgramacionNCapas.JPA.Colonia();
-//            direccionJPA.Colonia.setIdColonia(usuarioDireccion.Direccion.Colonia.getIdColonia());
-//
-//            direccionJPA.Usuario = usuarioJPA;
-//
-//            /*direccionJPA.Alumno = new com.digis01.DGarciaPorgramacionNCapasMarzo25.JPA.Alumno();
-//            direccionJPA.Alumno.setIdAlumno(alumnoJPA.getIdAlumno());*/
-//            entityManager.persist(direccionJPA);
-//
-//            System.out.println("");
-//
-//            result.correct = true;
-//
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
-//        return result;
-//    }
-//
+
     @Override
     public Result UsuaDirByIdJPA(int IdUsuario) {
         Result result = new Result();
@@ -171,7 +139,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario = queryUsuarios.getSingleResult();
 
             UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
-            usuarioDireccion.usuario = usuario;
+            usuarioDireccion.Usuario = usuario;
             TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
             queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
             usuarioDireccion.Direcciones = queryDireccion.getResultList();
@@ -333,43 +301,36 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 //        return result;
 //    }
 //
-//    @Transactional
-//    @Override
-//    public Result DeleteUsuarioDireccionJPA(int IdUsuario) {
-//        Result result = new Result();
-//
-//        try {
-//          
-//            com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
-//            usuario = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class, IdUsuario);
-//            
-//            if(usuario != null){
-//                TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDirecciones = 
-//                        entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :IdUsuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
-//                queryDirecciones.setParameter("IdUsuario", IdUsuario);
-//                
-//                List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direcciones = queryDirecciones.getResultList();
-//                
-//                for(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion : direcciones){
-//                    if(!entityManager.contains(direccion)){
-//                        direccion = entityManager.merge(direccion);
-//                    }
-//                    entityManager.remove(direccion);
-//                }
-//                
-//                if(!entityManager.contains(usuario)){
-//                    usuario = entityManager.merge(usuario);
-//                }
-//                entityManager.remove(usuario);
-//                
-//                }
-//            
-//
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
+    @Transactional
+    @Override
+    public Result DeleteUsuarioDireccionJPA(int IdUsuario) {
+        Result result = new Result();
+
+        try {
+          
+            TypedQuery<Direccion> queryDireccionesUsuario = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
+            queryDireccionesUsuario.setParameter("idusuario", IdUsuario);
+            List<Direccion> direcciones = queryDireccionesUsuario.getResultList();
+                        
+            Usuario usuario = entityManager.find(Usuario.class, IdUsuario);
+            
+            for (Direccion direccione : direcciones) {
+                entityManager.remove(direccione);
+            }
+            
+            entityManager.remove(usuario); 
+            
+            result.correct = true;
+            
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+        return result;
+        
+        }
+
 
 }
