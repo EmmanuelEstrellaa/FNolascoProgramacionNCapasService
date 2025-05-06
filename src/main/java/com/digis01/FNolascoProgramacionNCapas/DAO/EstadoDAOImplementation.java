@@ -22,30 +22,22 @@ public class EstadoDAOImplementation implements IEstadoDAO {
     @Override
     public Result EstadoByIdPaisJPA(int IdPais) {
         Result result = new Result();
-
-        try {
-            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> queryEstado = entityManager.createQuery("FROM Estado e WHERE Pais.IdPais = :idpais", com.digis01.FNolascoProgramacionNCapas.JPA.Estado.class);
-            queryEstado.setParameter("idPais", IdPais);
+        
+        try{
             
-            List<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> estados = queryEstado.getResultList();
-
-            for (com.digis01.FNolascoProgramacionNCapas.JPA.Estado estado : estados) {
-
-                Estado estadoo = new Estado();
-
-                estadoo.setIdEstado(estado.getIdEstado());
-                estadoo.setNombre(estado.getNombre());
-
-                result.object = estados;
-
-            }
+            TypedQuery<Estado> queryEstado = entityManager.createQuery("FROM Estado WHERE Pais.IdPais = :idPais", Estado.class);
+            queryEstado.setParameter("idPais", IdPais);
+            result.object = queryEstado.getResultList();
             result.correct = true;
-
-        } catch (Exception ex) {
+            
+            
+        }catch(Exception ex){
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
             result.ex = ex;
         }
+
+        
         return result;
     }
 

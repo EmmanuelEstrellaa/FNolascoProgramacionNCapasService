@@ -26,19 +26,9 @@ public class PaisDAOImplementation implements IPaisDAO {
         Result result = new Result();
         
         try{
-            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Pais> queryPais = entityManager.createQuery("FROM Pais", com.digis01.FNolascoProgramacionNCapas.JPA.Pais.class);
-            List<com.digis01.FNolascoProgramacionNCapas.JPA.Pais> paises = queryPais.getResultList();
             
-            for (com.digis01.FNolascoProgramacionNCapas.JPA.Pais paise : paises) {
-                
-                Pais pais = new Pais();
-                
-                pais.setIdPais(pais.getIdPais());
-                pais.setNombre(pais.getNombre());
-                
-                result.object = paises;
-                
-            }
+            TypedQuery<Pais> queryPais = entityManager.createQuery("FROM Pais", Pais.class);
+            result.object = queryPais.getResultList();
             result.correct = true;
             
         }catch(Exception ex){
@@ -46,7 +36,6 @@ public class PaisDAOImplementation implements IPaisDAO {
             result.errorMessage = ex.getLocalizedMessage();
             result.ex = ex;
         }
-        
 
         return result;
     }

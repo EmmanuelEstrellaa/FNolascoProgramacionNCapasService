@@ -21,56 +21,25 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
     @Autowired
     private EntityManager entityManager;
 
-//    @Override
-//    public Result UsuarioGetById(int IdUsuario) {
-//        Result result = new Result();
-//
-//        try {
-//
-//            jdbcTemplate.execute("CALL UsuarioGetById(?,?)", (CallableStatementCallback<Integer>) callableStatement -> {
-//
-//                callableStatement.setInt(1, IdUsuario);
-//                callableStatement.registerOutParameter(2, Types.REF_CURSOR);
-//                callableStatement.execute();
-//
-//                ResultSet resultSet = (ResultSet) callableStatement.getObject(2);
-//
-//                if (resultSet.next()) {
-//                    UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
-//                    usuarioDireccion.Usuario = new Usuario();
-//                    usuarioDireccion.Usuario.setIdUsuario(resultSet.getInt("IdUsuario"));
-//                    usuarioDireccion.Usuario.setUserName(resultSet.getString("Username"));
-//                    usuarioDireccion.Usuario.setNombre(resultSet.getString("Nombre"));
-//                    usuarioDireccion.Usuario.setApellidoPaterno(resultSet.getString("ApellidoPaterno"));
-//                    usuarioDireccion.Usuario.setEmail(resultSet.getString("Email"));
-//                    usuarioDireccion.Usuario.setSexo(resultSet.getString("Sexo"));
-//                    usuarioDireccion.Usuario.setTelefono(resultSet.getString("Telefono"));
-//                    usuarioDireccion.Usuario.setCelular(resultSet.getString("Celular"));
-//                    usuarioDireccion.Usuario.setCurp(resultSet.getString("Curp"));
-//                    usuarioDireccion.Usuario.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
-//                    usuarioDireccion.Usuario.setPassword(resultSet.getString("Password"));
-//                    usuarioDireccion.Usuario.setFechaNacimiento(resultSet.getDate("FechaNacimiento"));
-//                    usuarioDireccion.Usuario.setImagen(resultSet.getString("Imagen"));
-//                    usuarioDireccion.Usuario.Roll = new Roll();
-//                    usuarioDireccion.Usuario.Roll.setIdRoll(resultSet.getInt("IdRoll"));
-//                    usuarioDireccion.Usuario.Roll.setNombre(resultSet.getString("NombreRoll"));
-//
-//                    result.object = usuarioDireccion;
-//                }
-//
-//                result.correct = false;
-//                return 1;
-//            });
-//
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
-//        return result;
-//
-//    }
+    @Override
+    public Result UsuarioGetByIdJPA(int IdUsuario) {
+        Result result = new Result();
+        
+        try{
+            
+            entityManager.find(Usuario.class, IdUsuario);
+            
+        }catch(Exception ex){
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+
+
+        return result;
+
+    }
     @Override
     public Result GetAllJPA() {
 
