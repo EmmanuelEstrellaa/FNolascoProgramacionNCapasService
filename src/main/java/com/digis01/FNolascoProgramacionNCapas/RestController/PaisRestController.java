@@ -20,7 +20,7 @@ public class PaisRestController {
         Result result = paisDAOImplementation.GetAllJPA();
 
         if (result.correct) {
-            if (result.objects.isEmpty()) {
+            if (result.correct = false) {
                 return ResponseEntity.status(204).body(null);
             } else {
                 return ResponseEntity.ok(result);
