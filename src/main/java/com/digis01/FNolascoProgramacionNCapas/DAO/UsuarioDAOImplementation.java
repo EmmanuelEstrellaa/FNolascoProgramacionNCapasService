@@ -154,84 +154,59 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
         return result;
     }
-//
-//    @Transactional
-//    @Override
-//    public Result AddDireccionJPA(UsuarioDireccion usuarioDireccion) {
-//        Result result = new Result();
-//
-//        try {
-//
-//            /*inserción de dirección*/
-//            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA
-//                    = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
-//            direccionJPA.setCalle(usuarioDireccion.Direccion.getCalle());
-//            direccionJPA.setNumeroExterior(usuarioDireccion.Direccion.getNumeroExterior());
-//            direccionJPA.setNumeroInterior(usuarioDireccion.Direccion.getNumeroInterior());
-//
-//            direccionJPA.Colonia = new com.digis01.FNolascoProgramacionNCapas.JPA.Colonia();
-//            direccionJPA.Colonia.setIdColonia(usuarioDireccion.Direccion.Colonia.getIdColonia());
-//
-//            direccionJPA.Usuario = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
-//            direccionJPA.Usuario.setIdUsuario(usuarioDireccion.Usuario.getIdUsuario());
-//            entityManager.persist(direccionJPA);
-//
-//            System.out.println("");
-//
-//            result.correct = true;
-//
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
-//        return result;
-//    }
-//
-//    @Transactional
-//    @Override
-//    public Result UsuarioUpdateJPA(Usuario usuario) {
-//        Result result = new Result();
-//
-//        try {
-//
-//            com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuarioJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
-//            usuarioJPA = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class, usuario.getIdUsuario());
-//
-//            usuarioJPA.setIdUsuario(usuario.getIdUsuario());
-//            usuarioJPA.setUserName(usuario.getUserName());
-//            usuarioJPA.setNombre(usuario.getNombre());
-//            usuarioJPA.setApellidoPaterno(usuario.getApellidoPaterno());
-//            usuarioJPA.setEmail(usuario.getEmail());
-//            usuarioJPA.setSexo(usuario.getSexo());
-//            usuarioJPA.setTelefono(usuario.getTelefono());
-//            usuarioJPA.setCelular(usuario.getCelular());
-//            usuarioJPA.setCurp(usuario.getCurp());
-//            usuarioJPA.setApellidoMaterno(usuario.getApellidoMaterno());
-//            usuarioJPA.setPassword(usuario.getPassword());
-//            usuarioJPA.setFechaNacimiento(usuario.getFechaNacimiento());
-//            usuarioJPA.setImagen(usuario.getImagen());
-//
-//            usuarioJPA.Roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
-//            usuarioJPA.Roll.setIdRoll(usuario.Roll.getIdRoll());
-//
-//            //vaciar alumno ML a alumno JPA
-//            entityManager.merge(usuarioJPA);
-//
-//            System.out.println("");
-//
-//            result.correct = true;
-//
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
-//        return result;
-//    }
-//
+
+    @Transactional
+    @Override
+    public Result AddDireccionJPA(UsuarioDireccion usuarioDireccion) {
+        Result result = new Result();
+
+        try {
+
+            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA
+                    = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
+            direccionJPA.setCalle(usuarioDireccion.Direccion.getCalle());
+            direccionJPA.setNumeroExterior(usuarioDireccion.Direccion.getNumeroExterior());
+            direccionJPA.setNumeroInterior(usuarioDireccion.Direccion.getNumeroInterior());
+
+            direccionJPA.Colonia = new com.digis01.FNolascoProgramacionNCapas.JPA.Colonia();
+            direccionJPA.Colonia.setIdColonia(usuarioDireccion.Direccion.Colonia.getIdColonia());
+
+            direccionJPA.Usuario = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
+            direccionJPA.Usuario.setIdUsuario(usuarioDireccion.Usuario.getIdUsuario());
+            entityManager.persist(direccionJPA);
+
+            System.out.println("");
+
+            result.correct = true;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public Result UsuarioUpdateJPA(Usuario usuario) {
+        Result result = new Result();
+
+        try {
+            entityManager.merge(usuario);
+
+            result.correct = true;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
 //    @Transactional
 //    @Override
 //    public Result DieccionUpdateJPA(UsuarioDireccion usuarioDireccion) {
@@ -307,21 +282,20 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
         Result result = new Result();
 
         try {
-          
+
             TypedQuery<Direccion> queryDireccionesUsuario = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
             queryDireccionesUsuario.setParameter("idusuario", IdUsuario);
             List<Direccion> direcciones = queryDireccionesUsuario.getResultList();
-                        
+
             Usuario usuario = entityManager.find(Usuario.class, IdUsuario);
-            
+
             for (Direccion direccione : direcciones) {
                 entityManager.remove(direccione);
             }
-            
-            entityManager.remove(usuario); 
-            
+
+            entityManager.remove(usuario);
+
             result.correct = true;
-            
 
         } catch (Exception ex) {
             result.correct = false;
@@ -329,8 +303,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             result.ex = ex;
         }
         return result;
-        
-        }
 
+    }
 
 }

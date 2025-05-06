@@ -2,6 +2,7 @@ package com.digis01.FNolascoProgramacionNCapas.RestController;
 
 import com.digis01.FNolascoProgramacionNCapas.DAO.UsuarioDAOImplementation;
 import com.digis01.FNolascoProgramacionNCapas.JPA.Result;
+import com.digis01.FNolascoProgramacionNCapas.JPA.Usuario;
 import com.digis01.FNolascoProgramacionNCapas.JPA.UsuarioDireccion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/usuarioapi")
-public class DemoUser {
+public class UserRestController {
 
     @Autowired
     private UsuarioDAOImplementation usuarioDAOImplementation;
@@ -78,6 +79,19 @@ public class DemoUser {
     public ResponseEntity Add(@RequestBody UsuarioDireccion usuarioDireccion) {
 
         Result result = usuarioDAOImplementation.AddJPA(usuarioDireccion);
+
+        if (result.correct) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+    
+    @PostMapping("/update")
+    public ResponseEntity UpdateUsuario(@RequestBody Usuario usuario) {
+
+        Result result = usuarioDAOImplementation.UsuarioUpdateJPA(usuario);
 
         if (result.correct) {
             return ResponseEntity.ok(result);
