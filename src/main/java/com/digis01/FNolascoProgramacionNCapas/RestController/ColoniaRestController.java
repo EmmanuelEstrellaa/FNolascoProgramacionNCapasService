@@ -16,7 +16,7 @@ public class ColoniaRestController {
     @Autowired
     private ColoniaDAOImplementation coloniaDAOImplementation;
 
-    @GetMapping("/{IdMunicipio}")
+    @GetMapping("/bymunicipio/{IdMunicipio}")
     public ResponseEntity GetByIdMunicipio(@PathVariable int IdMunicipio) {
         Result result = coloniaDAOImplementation.ColoniaByIdMunicipioJPA(IdMunicipio);
 

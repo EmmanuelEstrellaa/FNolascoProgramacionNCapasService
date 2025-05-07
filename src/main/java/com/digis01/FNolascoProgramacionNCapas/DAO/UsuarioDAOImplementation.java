@@ -27,7 +27,17 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
         
         try{
             
+            TypedQuery<Direccion> queryDireccionesUsuario = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
+            queryDireccionesUsuario.setParameter("idusuario", IdUsuario);
+            List<Direccion> direcciones = queryDireccionesUsuario.getResultList();
+            
             entityManager.find(Usuario.class, IdUsuario);
+            
+            result.object = direcciones;
+            
+            result.correct = true;
+            
+            
             
         }catch(Exception ex){
             result.correct = false;
@@ -95,34 +105,34 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
         return result;
     }
+
+
+//    @Override
+//    public Result UsuaDirByIdJPA(int IdUsuario) {
+//        Result result = new Result();
 //
-
-    @Override
-    public Result UsuaDirByIdJPA(int IdUsuario) {
-        Result result = new Result();
-
-        try {
-            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario WHERE IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class);
-            queryUsuarios.setParameter("idusuario", IdUsuario);
-
-            com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario = queryUsuarios.getSingleResult();
-
-            UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
-            usuarioDireccion.Usuario = usuario;
-            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
-            queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
-            usuarioDireccion.Direcciones = queryDireccion.getResultList();
-            result.object = usuarioDireccion;
-
-            result.correct = true;
-        } catch (Exception ex) {
-            result.correct = false;
-            result.errorMessage = ex.getLocalizedMessage();
-            result.ex = ex;
-        }
-
-        return result;
-    }
+//        try {
+//            TypedQuery<Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario WHERE IdUsuario = :idusuario", Usuario.class);
+//            queryUsuarios.setParameter("idusuario", IdUsuario);
+//
+//            Usuario usuario = queryUsuarios.getSingleResult();
+//
+//            UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
+//            usuarioDireccion.Usuario = usuario;
+//            TypedQuery<Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
+//            queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
+//            usuarioDireccion.Direcciones = queryDireccion.getResultList();
+//            result.object = usuarioDireccion;
+//
+//            result.correct = true;
+//        } catch (Exception ex) {
+//            result.correct = false;
+//            result.errorMessage = ex.getLocalizedMessage();
+//            result.ex = ex;
+//        }
+//
+//        return result;
+//    }
 
     @Transactional
     @Override
