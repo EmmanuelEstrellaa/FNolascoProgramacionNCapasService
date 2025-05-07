@@ -107,32 +107,35 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
     }
 
 
-//    @Override
-//    public Result UsuaDirByIdJPA(int IdUsuario) {
-//        Result result = new Result();
-//
-//        try {
-//            TypedQuery<Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario WHERE IdUsuario = :idusuario", Usuario.class);
-//            queryUsuarios.setParameter("idusuario", IdUsuario);
-//
-//            Usuario usuario = queryUsuarios.getSingleResult();
-//
-//            UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
-//            usuarioDireccion.Usuario = usuario;
-//            TypedQuery<Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
-//            queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
-//            usuarioDireccion.Direcciones = queryDireccion.getResultList();
-//            result.object = usuarioDireccion;
-//
-//            result.correct = true;
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
-//        return result;
-//    }
+    @Override
+    public Result UsuaDirByIdJPA(int IdUsuario) {
+        Result result = new Result();
+
+        try {
+            TypedQuery<Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario WHERE IdUsuario = :idusuario", Usuario.class);
+            queryUsuarios.setParameter("idusuario", IdUsuario);
+            Usuario usuario = queryUsuarios.getSingleResult();
+
+            UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
+            usuarioDireccion.Usuario = usuario;
+            
+            TypedQuery<Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
+            queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
+            
+            
+            List<Direccion> direcciones = queryDireccion.getResultList();
+            usuarioDireccion.Direcciones = direcciones;
+             result.object = usuarioDireccion;
+
+            result.correct = true;
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
 
     @Transactional
     @Override

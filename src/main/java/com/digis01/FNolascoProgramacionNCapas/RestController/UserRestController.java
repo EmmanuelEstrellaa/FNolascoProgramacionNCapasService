@@ -57,20 +57,20 @@ public class UserRestController {
         }
     }
 
-//    @GetMapping("/getbyid/{IdUsuario}")
-//    public ResponseEntity UserByID(@PathVariable int IdUsuario) {
-//        Result result = usuarioDAOImplementation.UsuaDirByIdJPA(IdUsuario);
-//
-//        if (result.correct) {
-//            if (result.object == null) {
-//                return ResponseEntity.status(204).body(null);
-//            } else {
-//                return ResponseEntity.ok(result);
-//            }
-//        } else {
-//            return ResponseEntity.status(404).body(null);
-//        }
-//    }
+    @GetMapping("/getbyid/{IdUsuario}")
+    public ResponseEntity UserByID(@PathVariable int IdUsuario) {
+        Result result = usuarioDAOImplementation.UsuaDirByIdJPA(IdUsuario);
+
+        if (result.correct) {
+            if (result.object == null) {
+                return ResponseEntity.status(204).body(null);
+            } else {
+                return ResponseEntity.ok(result);
+            }
+        } else {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
 
     @PostMapping("/Add")
     public ResponseEntity Add(@RequestBody UsuarioDireccion usuarioDireccion) {
