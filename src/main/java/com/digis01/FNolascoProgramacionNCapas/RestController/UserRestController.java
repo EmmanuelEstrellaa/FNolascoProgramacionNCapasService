@@ -111,10 +111,12 @@ public class UserRestController {
     }
 
     @PostMapping("/CargaMasiva")
-    public ResponseEntity CargaMasiva(@RequestParam MultipartFile archivo, HttpSession session) {
-        try {
-            //Guardarlo en un punto del sistema
-            if (archivo != null && !archivo.isEmpty()) { //El archivo no sea nulo ni este vacio
+    public ResponseEntity CargaMasiva(@RequestParam("archivo") MultipartFile archivo) {
+        Result result = new Result();
+
+        //Guardarlo en un punto del sistema
+        if (archivo != null && !archivo.isEmpty()) { //El archivo no sea nulo ni este vacio
+            try {
                 String tipoArchivo = archivo.getOriginalFilename().split("\\.")[1];
 
                 String root = System.getProperty("user.dir");
@@ -132,19 +134,59 @@ public class UserRestController {
                 }
 
                 //Validar el archivo
-                List<ResultFile> listaErrores = ValidarArchivo(listaUsuarios);
+                List<ResultFile> listaErrores = new ArrayList<>();
 
                 if (listaErrores.isEmpty()) {
-                    return ResponseEntity.ok(listaUsuarios);
+                    //Proceso el archivo
+                    result.correct = true;
+                    result.object = absolutePath;
+                    return ResponseEntity.ok(result);
                 } else {
-                    return ResponseEntity.noContent().build();
-                }
-            }
+                    result.correct = false;
+                    result.objects = new ArrayList<>();
 
-        } catch (Exception ex) {
-            return ResponseEntity.status(500).body("Todo mal");
+                    for (ResultFile error : listaErrores) {
+                        result.objects.add(error);
+                    }
+                    return ResponseEntity.status(400).body(result);
+                }
+
+            } catch (Exception ex) {
+                return ResponseEntity.status(500).body("Todo mal");
+            }
+        } else {
+            result.correct = false;
+            return ResponseEntity.status(400).body(result);
         }
-        return null;
+
+    }
+    
+    @PostMapping("/CargaMasiva/Procesar")
+    public ResponseEntity Procesar(@RequestBody String absolutePath){
+        Result result = new Result();
+        
+        try{
+            String tipoArchivo = absolutePath.split("\\.")[1];
+            
+            List<UsuarioDireccion> listaUsuarios = new ArrayList<>();
+            if(tipoArchivo.equals("txt")){
+                listaUsuarios = LecturaArchivoTXT(new File(absolutePath));
+                
+            }else{
+                listaUsuarios = LecturaArchivoExcel(new File(absolutePath));
+            }
+            
+            for (UsuarioDireccion usuario : listaUsuarios) {
+                usuarioDAOImplementation.AddJPA(usuario);
+            }
+            
+            result.correct = true;
+            
+        }catch(Exception ex){
+            result.correct = false;
+        }
+
+        return ResponseEntity.ok(result);
     }
 
     public List<UsuarioDireccion> LecturaArchivoTXT(File archivo) {
