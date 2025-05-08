@@ -125,7 +125,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             
             List<Direccion> direcciones = queryDireccion.getResultList();
             usuarioDireccion.Direcciones = direcciones;
-             result.object = usuarioDireccion;
+            result.object = usuarioDireccion;
 
             result.correct = true;
         } catch (Exception ex) {
