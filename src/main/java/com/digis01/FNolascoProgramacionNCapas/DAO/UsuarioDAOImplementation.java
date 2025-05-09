@@ -236,28 +236,30 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 //
 //        return result;
 //    }
-//
-//    @Transactional
-//    @Override
-//    public Result DireccionDeleteJPA(int IdDireccion) {
-//        Result result = new Result();
-//
-//        try {
-//
-//            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
-//            direccion = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class, IdDireccion);
-//
-//            entityManager.remove(direccion);
-//
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//        }
-//
-//        return result;
-//    }
-//
+
+    @Transactional
+    @Override
+    public Result DireccionDeleteJPA(int IdDireccion) {
+        Result result = new Result();
+
+        try {
+
+            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
+            direccion = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class, IdDireccion);
+
+            entityManager.remove(direccion);
+            
+            result.correct = true;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
     @Transactional
     @Override
     public Result DeleteUsuarioDireccionJPA(int IdUsuario) {

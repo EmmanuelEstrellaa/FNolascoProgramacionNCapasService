@@ -85,6 +85,18 @@ public class UserRestController {
 
     }
 
+    @PostMapping("/AddDireccion")
+    public ResponseEntity AddDireccion(@RequestBody UsuarioDireccion usuarioDireccion) {
+        Result result = usuarioDAOImplementation.AddDireccionJPA(usuarioDireccion);
+
+        if (result.correct) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
     @PostMapping("/update")
     public ResponseEntity UpdateUsuario(@RequestBody Usuario usuario) {
 
@@ -108,6 +120,17 @@ public class UserRestController {
             return ResponseEntity.badRequest().build();
         }
 
+    }
+
+    @DeleteMapping("/deleteDir/{IdDireccion}")
+    public ResponseEntity DireccionDelete(@PathVariable int IdDireccion) {
+        Result result = usuarioDAOImplementation.DireccionDeleteJPA(IdDireccion);
+
+        if (result.correct) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/CargaMasiva")
@@ -160,29 +183,29 @@ public class UserRestController {
         }
 
     }
-    
+
     @PostMapping("/CargaMasiva/Procesar")
-    public ResponseEntity Procesar(@RequestBody String absolutePath){
+    public ResponseEntity Procesar(@RequestBody String absolutePath) {
         Result result = new Result();
-        
-        try{
+
+        try {
             String tipoArchivo = absolutePath.split("\\.")[1];
-            
+
             List<UsuarioDireccion> listaUsuarios = new ArrayList<>();
-            if(tipoArchivo.equals("txt")){
+            if (tipoArchivo.equals("txt")) {
                 listaUsuarios = LecturaArchivoTXT(new File(absolutePath));
-                
-            }else{
+
+            } else {
                 listaUsuarios = LecturaArchivoExcel(new File(absolutePath));
             }
-            
+
             for (UsuarioDireccion usuario : listaUsuarios) {
                 usuarioDAOImplementation.AddJPA(usuario);
             }
-            
+
             result.correct = true;
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             result.correct = false;
         }
 

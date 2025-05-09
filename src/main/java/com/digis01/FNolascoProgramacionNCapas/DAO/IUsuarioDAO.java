@@ -13,6 +13,6 @@ public interface IUsuarioDAO {
     Result UsuaDirByIdJPA(int IdUsuario);
     Result UsuarioUpdateJPA(Usuario usuario);
 //    Result DieccionUpdateJPA(UsuarioDireccion usuarioDireccion);
-//    Result DireccionDeleteJPA(int IdDireccion);
+    Result DireccionDeleteJPA(int IdDireccion);
     Result DeleteUsuarioDireccionJPA(int IdUsuario);
 }
