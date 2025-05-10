@@ -255,6 +255,7 @@ public class UserRestController {
 
         } catch (Exception ex) {
             listaUsuarios = null;
+
         }
 
         return listaUsuarios;
@@ -272,13 +273,14 @@ public class UserRestController {
                     usuarioDireccion.Usuario.setNombre(row.getCell(0).toString());
                     usuarioDireccion.Usuario.setApellidoPaterno(row.getCell(1).toString());
                     usuarioDireccion.Usuario.setApellidoMaterno(row.getCell(2).toString());
-                    usuarioDireccion.Usuario.setEmail(row.getCell(3).toString());
-                    usuarioDireccion.Usuario.setSexo(row.getCell(4).toString());
-                    usuarioDireccion.Usuario.setTelefono(row.getCell(5).toString());
-                    usuarioDireccion.Usuario.setCelular(row.getCell(6).toString());
-                    usuarioDireccion.Usuario.setCurp(row.getCell(7).toString());
-                    usuarioDireccion.Usuario.setUserName(row.getCell(8).toString());
-                    Cell cell = row.getCell(9);
+                    usuarioDireccion.Usuario.setUserName(row.getCell(3).toString());
+                    usuarioDireccion.Usuario.setEmail(row.getCell(4).toString());
+                    usuarioDireccion.Usuario.setPassword(row.getCell(5).toString());
+                    usuarioDireccion.Usuario.setSexo(row.getCell(6).toString());
+                    usuarioDireccion.Usuario.setTelefono(row.getCell(7).toString());
+                    usuarioDireccion.Usuario.setCelular(row.getCell(8).toString());
+                    usuarioDireccion.Usuario.setCurp(row.getCell(9).toString());
+                    Cell cell = row.getCell(10);
                     Date fechaNacimiento;
                     if (cell.getCellType() == CellType.NUMERIC) {
                         fechaNacimiento = cell.getDateCellValue();
@@ -289,15 +291,15 @@ public class UserRestController {
                     }
                     usuarioDireccion.Usuario.setFechaNacimiento(fechaNacimiento);
                     usuarioDireccion.Usuario.Roll = new Roll();
-                    usuarioDireccion.Usuario.Roll.setIdRoll((int) row.getCell(10).getNumericCellValue());
+                    usuarioDireccion.Usuario.Roll.setIdRoll((int) row.getCell(11).getNumericCellValue());
 //                    usuarioDireccion.Usuario.setStatus(row.getCell(3) != null ? (int) row.getCell(3).getNumericCellValue() : 0 );
                     usuarioDireccion.Direccion = new Direccion();
-                    usuarioDireccion.Direccion.setCalle(row.getCell(11).toString());
-                    usuarioDireccion.Direccion.setNumeroExterior(row.getCell(12).toString());
-                    usuarioDireccion.Direccion.setNumeroInterior(row.getCell(13).toString());
+                    usuarioDireccion.Direccion.setCalle(row.getCell(12).toString());
+                    usuarioDireccion.Direccion.setNumeroExterior(row.getCell(13).toString());
+                    usuarioDireccion.Direccion.setNumeroInterior(row.getCell(14).toString());
 
                     usuarioDireccion.Direccion.Colonia = new Colonia();
-                    usuarioDireccion.Direccion.Colonia.setIdColonia((int) row.getCell(14).getNumericCellValue());
+                    usuarioDireccion.Direccion.Colonia.setIdColonia((int) row.getCell(15).getNumericCellValue());
                     listaUsuarios.add(usuarioDireccion);
                 }
 
