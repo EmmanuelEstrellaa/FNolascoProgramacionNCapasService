@@ -24,32 +24,29 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
     @Override
     public Result UsuarioGetByIdJPA(int IdUsuario) {
         Result result = new Result();
-        
-        try{
-            
+
+        try {
+
             TypedQuery<Direccion> queryDireccionesUsuario = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
             queryDireccionesUsuario.setParameter("idusuario", IdUsuario);
             List<Direccion> direcciones = queryDireccionesUsuario.getResultList();
-            
+
             entityManager.find(Usuario.class, IdUsuario);
-            
+
             result.object = direcciones;
-            
+
             result.correct = true;
-            
-            
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
             result.ex = ex;
         }
 
-
-
         return result;
 
     }
+
     @Override
     public Result GetAllJPA() {
 
@@ -106,7 +103,6 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
         return result;
     }
 
-
     @Override
     public Result UsuaDirByIdJPA(int IdUsuario) {
         Result result = new Result();
@@ -118,11 +114,10 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
             UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
             usuarioDireccion.Usuario = usuario;
-            
+
             TypedQuery<Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", Direccion.class);
             queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
-            
-            
+
             List<Direccion> direcciones = queryDireccion.getResultList();
             usuarioDireccion.Direcciones = direcciones;
             result.object = usuarioDireccion;
@@ -236,7 +231,6 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 //
 //        return result;
 //    }
-
     @Transactional
     @Override
     public Result DireccionDeleteJPA(int IdDireccion) {
@@ -248,7 +242,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             direccion = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class, IdDireccion);
 
             entityManager.remove(direccion);
-            
+
             result.correct = true;
 
         } catch (Exception ex) {
@@ -288,6 +282,36 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
         }
         return result;
 
+    }
+
+    @Override
+    public Result GetAllDinamico(Usuario usuario) {
+        Result result = new Result();
+
+        try {
+            String queryDinamico = "FROM Usuario";
+
+            queryDinamico = queryDinamico + " WHERE Nombre LIKE :nombre";
+            queryDinamico = queryDinamico + " AND  ApellidoPaterno = :apaterno";
+            queryDinamico = queryDinamico + " AND ApellidoMaterno = :amaterno";
+
+            TypedQuery<Usuario> queryUsuario = entityManager.createQuery(queryDinamico, Usuario.class);
+            queryUsuario.setParameter("nombre", "%" + usuario.getNombre() + "%");
+            queryUsuario.setParameter("apaterno", "%" + usuario.getApellidoPaterno() + "%");
+            queryUsuario.setParameter("amaterno", "%" + usuario.getApellidoMaterno() + "%");
+            
+            List<Usuario> usuarios = queryUsuario.getResultList();
+            result.object = usuarios;
+
+            result.correct = true;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
     }
 
 }

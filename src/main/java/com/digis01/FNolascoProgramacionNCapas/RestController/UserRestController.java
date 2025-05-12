@@ -338,4 +338,19 @@ public class UserRestController {
         return listaErrores;
     }
 
+    @PostMapping("/busquedaDinamica")
+    public ResponseEntity GetAllDinamico(@RequestBody Usuario usuario) {
+        Result result = usuarioDAOImplementation.GetAllDinamico(usuario);
+
+        if (result.correct) {
+            if (result.correct = false) {
+                return ResponseEntity.status(204).body(null);
+            } else {
+                return ResponseEntity.ok(result);
+            }
+        } else {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
+
 }

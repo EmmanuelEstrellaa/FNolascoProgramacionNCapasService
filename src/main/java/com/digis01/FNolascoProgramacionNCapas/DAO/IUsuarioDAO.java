@@ -15,4 +15,5 @@ public interface IUsuarioDAO {
 //    Result DieccionUpdateJPA(UsuarioDireccion usuarioDireccion);
     Result DireccionDeleteJPA(int IdDireccion);
     Result DeleteUsuarioDireccionJPA(int IdUsuario);
+    Result GetAllDinamico(Usuario usuario);
 }
